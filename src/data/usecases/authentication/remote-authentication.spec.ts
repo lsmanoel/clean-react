@@ -1,7 +1,7 @@
 import { RemoteAuthentication } from './remote-authentication'
 import { HttpPostClientSpy } from '@/data/test/mock-http-client'
 import { HttpStatusCode } from '@/data/protocols/http/http-response'
-import { mockAuthentication } from '@/domain/test/mock-authentication'
+import { mockAuthentication, mockAccountModel } from '@/domain/test/mock-account'
 import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials-error'
 import { UnexpectedError } from '@/domain/errors/unexpected-error'
 import faker from 'faker'
@@ -37,13 +37,15 @@ describe('RemoteAuthentication', () => {
     expect(httpPostClientSpy.body).toEqual(authenticationParams)
   })
 
-  test('Should throw InvalidCredentialsError if HttpPostClient return 401', async () => {
+  test('Should return an AccountModel if HttpPostClient return 200', async () => {
     const { sut, httpPostClientSpy } = makeSut()
+    const httpResult = mockAccountModel()
     httpPostClientSpy.response = {
-      statusCode: HttpStatusCode.unathorized
+      statusCode: HttpStatusCode.ok,
+      body: httpResult
     }
-    const promise = sut.auth(mockAuthentication())
-    await expect(promise).rejects.toThrow(new InvalidCredentialsError())
+    const account = await sut.auth(mockAuthentication())
+    expect(account).toEqual(httpResult)
   })
 
   test('Should throw UnexpectedError if HttpPostClient return 400', async () => {
@@ -53,6 +55,15 @@ describe('RemoteAuthentication', () => {
     }
     const promise = sut.auth(mockAuthentication())
     await expect(promise).rejects.toThrow(new UnexpectedError())
+  })
+
+  test('Should throw InvalidCredentialsError if HttpPostClient return 401', async () => {
+    const { sut, httpPostClientSpy } = makeSut()
+    httpPostClientSpy.response = {
+      statusCode: HttpStatusCode.unathorized
+    }
+    const promise = sut.auth(mockAuthentication())
+    await expect(promise).rejects.toThrow(new InvalidCredentialsError())
   })
 
   test('Should throw UnexpectedError if HttpPostClient return 404', async () => {
