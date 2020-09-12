@@ -42,7 +42,7 @@ const SingUp: React.FC<Props> = ({ validation }: Props) => {
           <Input type="email" name="email" placeholder="Digite seu e-mail" />
           <Input type="password" name="password" placeholder="Digite sua senha" />
           <Input type="password" name="passwordConfirmation" placeholder="Repita sua senha" />
-          <button data-testid="submit" className={Styles.submit} disabled type="submit" >Entrar</button>
+          <button data-testid="submit" className={Styles.submit} disabled={!!state.nameError || !!state.emailError || !!state.passwordError || !!state.passwordConfirmationError} type="submit" >Entrar</button>
           <span className={Styles.link}>Voltar para Login</span>
           <FormStatus />
         </form>
