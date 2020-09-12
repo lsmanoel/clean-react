@@ -36,4 +36,13 @@ button {
   &:hover {
     opacity: 0.9;
   }
+
+  &:disabled{
+    background-color: $disabledBackground;
+    color: $disabledFont;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
 }
