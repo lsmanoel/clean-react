@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
 type Factory = {
   makeLogin: React.FC
-  makeSingUp: React.FC
+  makeSignUp: React.FC
 }
 
 const Router: React.FC<Factory> = (factory: Factory) => {
@@ -11,7 +11,7 @@ const Router: React.FC<Factory> = (factory: Factory) => {
     <BrowserRouter>
       <Switch>
         <Route path="/login" exact component={factory.makeLogin} />
-        <Route path="/singup" exact component={factory.makeSingUp} />
+        <Route path="/signup" exact component={factory.makeSignUp} />
       </Switch>
     </BrowserRouter>
   )

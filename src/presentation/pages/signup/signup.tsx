@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory, Link } from 'react-router-dom'
-import Styles from './singup-styles.scss'
+import Styles from './signup-styles.scss'
 import { Footer, Input, LoginHeader, FormStatus, SubmitButton } from '@/presentation/components'
 import Context from '@/presentation/contexts/form/form-context'
 import { Validation } from '@/presentation/protocols/validation'
@@ -12,7 +12,7 @@ type Props = {
   saveAccessToken: SaveAccessToken
 }
 
-const SingUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Props) => {
+const SignUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Props) => {
   const history = useHistory()
   const [state, setState] = useState({
     isLoading: false,
@@ -71,7 +71,7 @@ const SingUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Pr
   }
 
   return (
-    <div className={Styles.singup}>
+    <div className={Styles.signup}>
       <LoginHeader />
       <Context.Provider value={ { state, setState }}>
         <form data-testid="form" className={Styles.form} onSubmit={handleSubmit}>
@@ -90,4 +90,4 @@ const SingUp: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Pr
   )
 }
 
-export default SingUp
+export default SignUp
