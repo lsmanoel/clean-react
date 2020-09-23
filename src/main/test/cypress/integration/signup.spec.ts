@@ -130,4 +130,44 @@ describe('SignUp', () => {
     cy.getByTestId('submit').dblclick()
     FormHelper.testHttpCallsCount(1)
   })
+
+  it('Should not call submit without name', () => {
+    Http.mockOk()
+    const password = faker.internet.email()
+    cy.getByTestId('password').focus().type(password)
+    cy.getByTestId('passwordConfirmation').focus().type(password)
+    cy.getByTestId('email').focus().type(faker.internet.email()).type('{enter}')
+    FormHelper.testHttpCallsCount(0)
+  })
+
+  it('Should not call submit without password', () => {
+    Http.mockOk()
+    cy.getByTestId('name').focus().type(faker.random.alphaNumeric(5))
+    cy.getByTestId('email').focus().type(faker.internet.email()).type('{enter}')
+    FormHelper.testHttpCallsCount(0)
+  })
+
+  it('Should not call submit without email', () => {
+    Http.mockOk()
+    const password = faker.internet.email()
+    cy.getByTestId('name').focus().type(faker.random.alphaNumeric(5))
+    cy.getByTestId('password').focus().type(password)
+    cy.getByTestId('passwordConfirmation').focus().type(password).type('{enter}')
+    FormHelper.testHttpCallsCount(0)
+  })
+
+  it('Should not call submit if password and passwordConfirmation is diferent', () => {
+    Http.mockOk()
+    cy.getByTestId('name').focus().type(faker.random.alphaNumeric(5))
+    cy.getByTestId('email').focus().type(faker.internet.email())
+    cy.getByTestId('password').focus().type(faker.random.alphaNumeric(5))
+    cy.getByTestId('passwordConfirmation').focus().type(faker.random.alphaNumeric(5)).type('{enter}')
+    FormHelper.testHttpCallsCount(0)
+  })
+
+  it('Should not call submit if form is empty', () => {
+    Http.mockOk()
+    cy.getByTestId('password').focus().type('{enter}')
+    FormHelper.testHttpCallsCount(0)
+  })
 })
