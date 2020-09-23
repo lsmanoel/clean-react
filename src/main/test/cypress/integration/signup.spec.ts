@@ -107,4 +107,16 @@ describe('SignUp', () => {
     FormHelper.testUrl('/')
     cy.window().then(window => assert.isOk(window.localStorage.getItem('accessToken')))
   })
+
+  it('Should present save accessToken if submit with enter key', () => {
+    Http.mockOk()
+    cy.getByTestId('name').focus().type(faker.random.alphaNumeric(5))
+    cy.getByTestId('email').focus().type(faker.internet.email())
+    const password = faker.random.alphaNumeric(5)
+    cy.getByTestId('password').focus().type(password)
+    cy.getByTestId('passwordConfirmation').focus().type(password).type('{enter}')
+    cy.getByTestId('error-wrap').should('not.have.descendants')
+    FormHelper.testUrl('/')
+    FormHelper.testLocalStorageItem('accessToken')
+  })
 })
